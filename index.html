@@ -52,6 +52,8 @@
 
     <!-- List -->
     <section id="list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-5"></section>
+    <div id="pagination" class="flex justify-center items-center gap-4 mt-6 text-white/80"></div>
+
   </main>
 
   <!-- Modal -->
@@ -90,6 +92,10 @@
     const FALLBACK_DATA = [
       { "name": "نمونه کاربر", "department": "نمونه بخش", "extension": "100" }
     ];
+
+    let currentPage = 1;
+    let itemsPerPage = 10;
+
 
     let contacts = [];
     let original = [];
@@ -138,17 +144,49 @@
       render();
     }
 
-    function render(list=contacts){
-      const $list=document.getElementById("list");
-      const $summary=document.getElementById("summary");
-      $list.innerHTML="";
-      list.forEach(item=>{
-        const card=document.createElement("article");
-        card.className="rounded-2xl bg-white/12 hover:bg-white/16 transition backdrop-blur-md border border-white/30 shadow-lg p-4 flex items-center gap-3";
-        card.innerHTML=`
+    function renderPaginationControls(totalPages) {
+      const $pagination = document.getElementById("pagination");
+      $pagination.innerHTML = "";
+
+      if (totalPages <= 1) return;
+
+      const prevBtn = document.createElement("button");
+      prevBtn.textContent = "← قبلی";
+      prevBtn.className = "px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 border border-white/30";
+      prevBtn.disabled = currentPage === 1;
+      prevBtn.onclick = () => { currentPage--; render(); };
+
+      const nextBtn = document.createElement("button");
+      nextBtn.textContent = "بعدی →";
+      nextBtn.className = "px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 border border-white/30";
+      nextBtn.disabled = currentPage === totalPages;
+      nextBtn.onclick = () => { currentPage++; render(); };
+
+      $pagination.appendChild(prevBtn);
+      $pagination.appendChild(nextBtn);
+    }
+
+
+    function render(list = contacts) {
+      calculateItemsPerPage();
+      const $list = document.getElementById("list");
+      const $summary = document.getElementById("summary");
+      $list.innerHTML = "";
+
+      const totalPages = Math.ceil(list.length / itemsPerPage);
+      currentPage = Math.min(currentPage, totalPages);
+
+      const start = (currentPage - 1) * itemsPerPage;
+      const end = start + itemsPerPage;
+      const pageItems = list.slice(start, end);
+
+      pageItems.forEach(item => {
+        const card = document.createElement("article");
+        card.className = "rounded-2xl bg-white/12 hover:bg-white/16 transition backdrop-blur-md border border-white/30 shadow-lg p-4 flex items-center gap-3";
+        card.innerHTML = `
           <div class="flex-1 min-w-0">
             <div class="flex items-center gap-2">
-                <h3 class="font-semibold text-white truncate">${item.name || "—"}</h3>
+              <h3 class="font-semibold text-white truncate">${item.name || "—"}</h3>
               ${item.department ? `<span class="text-[10px] px-2 py-0.5 rounded-full bg-white/15 border border-white/25 text-white/80">${item.department}</span>` : ""}
             </div>
             <p class="text-white/75 mt-1 text-sm"><span class="opacity-80">داخلی:</span> ${item.extension || "—"}</p>
@@ -159,8 +197,18 @@
         `;
         $list.appendChild(card);
       });
-      $summary.textContent = `تعداد رکوردها: ${list.length}`;
+
+  $summary.textContent = `تعداد کل: ${list.length} | صفحه ${currentPage} از ${totalPages}`;
+  renderPaginationControls(totalPages);
+}
+
+
+    function calculateItemsPerPage() {
+      const cardHeight = 120; // ارتفاع تقریبی هر کارت
+      const availableHeight = window.innerHeight - 300; // کم کردن header و search
+      itemsPerPage = Math.max(5, Math.floor(availableHeight / cardHeight));
     }
+
 
     function handleSearch() {
       const qRaw = document.getElementById("searchInput").value || "";
