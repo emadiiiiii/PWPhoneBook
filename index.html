@@ -18,7 +18,7 @@
     .frosty-bg {
       background: radial-gradient(1200px 600px at 10% -10%, #c7f2ff66, transparent 60%),
                   radial-gradient(900px 500px at 110% 20%, #e3d5ff66, transparent 60%),
-                  linear-gradient(135deg, #0ea5e9 0%, #7c3aed 100%);
+                  linear-gradient(135deg, #fd8139 0%, #7c3aed 100%);
 
                  
 
@@ -40,18 +40,38 @@
   </header>
 
   <!-- Search -->
-  <main class="max-w-5xl mx-auto px-4 pb-24">
-    <div class="rounded-2xl p-4 bg-white/10 backdrop-blur-md border border-white/30 shadow-xl">
+  <main class="max-w-5xl mx-auto px-4 pb-24 overflow-visible z-0 relative">
+    <div class="rounded-2xl p-4 bg-white/10 backdrop-blur-md border border-white/30 shadow-xl overflow-visible relative z-20">
       <div class="flex flex-col sm:flex-row gap-3">
         <input id="searchInput" type="text" placeholder="جستجو: نام یا داخلی..."
           class="flex-1 rounded-xl bg-white/15 border border-white/30 focus:border-white/60 focus:ring-2 focus:ring-white/30 py-3 px-4 placeholder-white/60 text-white outline-none"/>
-        <button id="clearBtn" class="rounded-xl px-4 py-3 bg-white/10 hover:bg-white/20 border border-white/30">پاک کردن</button>
+          
+          <div class="relative w-full sm:w-64 z-50" id="deptDropdown">
+            <button id="deptToggle"
+              class="w-full rounded-xl bg-white/10 backdrop-blur border border-white/30 text-white py-3 px-4 flex 
+              justify-between items-center focus:outline-none">
+              <span id="deptSelected">همهٔ بخش‌ها</span>
+              <span class="text-white/60">▾</span>
+            </button>
+          
+            <div id="deptList"
+  class="absolute z-50 mt-2 w-full max-h-60 overflow-y-auto rounded-xl 
+         bg-gradient-to-br from-[#fd8139e6] to-[#7c3aede6] 
+         backdrop-blur-md border border-white/30 shadow-xl hidden transition-all">
+</div>
+
+
+
+          </div>
+          
+          
+          <button id="clearBtn" class="rounded-xl px-4 py-3 bg-white/10 hover:bg-white/20 border border-white/30">پاک کردن</button>
       </div>
       <div id="summary" class="mt-2 text-sm text-white/70"></div>
     </div>
 
     <!-- List -->
-    <section id="list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-5"></section>
+    <section id="list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-5 z-10 relative overflow-visible"></section>
     <div id="pagination" class="flex justify-center items-center gap-4 mt-6 text-white/80"></div>
 
   </main>
@@ -92,18 +112,16 @@
     const FALLBACK_DATA = [
       { "name": "نمونه کاربر", "department": "نمونه بخش", "extension": "100" }
     ];
-
-    let currentPage = 1;
-    let itemsPerPage = 10;
-
-
+  
     let contacts = [];
     let original = [];
-
+    let currentPage = 1;
+    let itemsPerPage = 10;
+  
     const normalizeText = s => String(s||"").trim().replace(/[‌\u200c]/g," ").replace(/[كي]/g,m=>({"ك":"ک","ي":"ی"}[m]||m)).replace(/\s+/g," ");
     const normalizeDigits = s => String(s||"").replace(/[۰-۹٠-٩]/g, d=>({"۰":"0","۱":"1","۲":"2","۳":"3","۴":"4","۵":"5","۶":"6","۷":"7","۸":"8","۹":"9","٠":"0","١":"1","٢":"2","٣":"3","٤":"4","٥":"5","٦":"6","٧":"7","٨":"8","٩":"9"}[d]||d));
     const makeId = (name,ext,dept) => btoa(unescape(encodeURIComponent(`${normalizeText(name)}|${normalizeDigits(ext)}|${normalizeText(dept||"")}`)));
-
+  
     function splitCombined(e){
       const name=normalizeText(e.name||"");
       const partsByVa = name.split(/\s+و\s+/g);
@@ -112,10 +130,10 @@
       if(partsByDash.length>1) return partsByDash.map(n=>({...e,name:n.trim()}));
       return [e];
     }
-
+  
     async function init(){
       const saved = localStorage.getItem(LS_KEY);
-      if(saved){ contacts=JSON.parse(saved); original=contacts.slice(); render(); return; }
+      if(saved){ contacts=JSON.parse(saved); original=contacts.slice(); updateDeptFilterOptions(); render(); return; }
       try{
         const res=await fetch(DATA_URL);
         if(!res.ok) throw new Error(res.statusText);
@@ -126,7 +144,7 @@
         processData(FALLBACK_DATA);
       }
     }
-
+  
     function processData(raw){
       const processed=[];
       for(const r of raw){
@@ -140,50 +158,71 @@
       }
       processed.forEach(p=>p.id=makeId(p.name,p.extension,p.department));
       contacts=processed; original=processed.slice();
-      localStorage.setItem(LS_KEY,JSON.stringify(contacts));
+      localStorage.setItem(LS_KEY, JSON.stringify(contacts));
+      updateDeptFilterOptions();
       render();
     }
+  
+    function updateDeptFilterOptions() {
+      const $list = document.getElementById("deptList");
+      const $selected = document.getElementById("deptSelected");
 
-    function renderPaginationControls(totalPages) {
-      const $pagination = document.getElementById("pagination");
-      $pagination.innerHTML = "";
+      const departments = [...new Set(contacts.map(c => normalizeText(c.department)).filter(Boolean))].sort();
+      const allOptions = ["همهٔ بخش‌ها", ...departments];
 
-      if (totalPages <= 1) return;
 
-      const prevBtn = document.createElement("button");
-      prevBtn.textContent = "← قبلی";
-      prevBtn.className = "px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 border border-white/30";
-      prevBtn.disabled = currentPage === 1;
-      prevBtn.onclick = () => { currentPage--; render(); };
+      $list.innerHTML = "";
+      allOptions.forEach(dep => {
+        const option = document.createElement("div");
+        option.textContent = dep;
+        // option.className = "px-4 py-2 cursor-pointer hover:bg-white/20 text-white/90";
+        option.className = "px-4 py-2 cursor-pointer hover:bg-white/10 text-white";
 
-      const nextBtn = document.createElement("button");
-      nextBtn.textContent = "بعدی →";
-      nextBtn.className = "px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 border border-white/30";
-      nextBtn.disabled = currentPage === totalPages;
-      nextBtn.onclick = () => { currentPage++; render(); };
 
-      $pagination.appendChild(prevBtn);
-      $pagination.appendChild(nextBtn);
+        option.onclick = () => {
+          $selected.textContent = dep;
+          currentPage = 1;
+          render();
+          $list.classList.add("hidden");
+        };
+        $list.appendChild(option);
+      });
     }
 
-
-    function render(list = contacts) {
+  
+    function calculateItemsPerPage() {
+      const cardHeight = 120;
+      const availableHeight = window.innerHeight - 300;
+      itemsPerPage = Math.max(5, Math.floor(availableHeight / cardHeight));
+    }
+  
+    function render(list = contacts){
       calculateItemsPerPage();
+
+      const selectedDeptRaw = document.getElementById("deptSelected").textContent;
+const selectedDept = normalizeText(selectedDeptRaw);
+if (selectedDeptRaw !== "همهٔ بخش‌ها" && selectedDept) {
+  list = list.filter(c => normalizeText(c.department) === selectedDept);
+}
+
+
+  
       const $list = document.getElementById("list");
       const $summary = document.getElementById("summary");
+      const $pagination = document.getElementById("pagination");
       $list.innerHTML = "";
-
+      $pagination.innerHTML = "";
+  
       const totalPages = Math.ceil(list.length / itemsPerPage);
       currentPage = Math.min(currentPage, totalPages);
-
       const start = (currentPage - 1) * itemsPerPage;
       const end = start + itemsPerPage;
       const pageItems = list.slice(start, end);
-
+  
       pageItems.forEach(item => {
-        const card = document.createElement("article");
-        card.className = "rounded-2xl bg-white/12 hover:bg-white/16 transition backdrop-blur-md border border-white/30 shadow-lg p-4 flex items-center gap-3";
-        card.innerHTML = `
+        const card=document.createElement("article");
+        card.className="rounded-2xl bg-white/12 hover:bg-white/16 transition backdrop-blur-md border border-white/30 shadow-lg p-4 flex items-center gap-3";
+        card.innerHTML=`
           <div class="flex-1 min-w-0">
             <div class="flex items-center gap-2">
               <h3 class="font-semibold text-white truncate">${item.name || "—"}</h3>
@@ -197,19 +236,27 @@
         `;
         $list.appendChild(card);
       });
-
-  $summary.textContent = `تعداد کل: ${list.length} | صفحه ${currentPage} از ${totalPages}`;
-  renderPaginationControls(totalPages);
-}
-
-
-    function calculateItemsPerPage() {
-      const cardHeight = 120; // ارتفاع تقریبی هر کارت
-      const availableHeight = window.innerHeight - 300; // کم کردن header و search
-      itemsPerPage = Math.max(5, Math.floor(availableHeight / cardHeight));
+  
+      $summary.textContent = `تعداد کل: ${list.length} | صفحه ${currentPage} از ${totalPages}`;
+  
+      if (totalPages > 1) {
+        const prevBtn = document.createElement("button");
+        prevBtn.textContent = " قبلی";
+        prevBtn.className = "px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 border border-white/30";
+        prevBtn.disabled = currentPage === 1;
+        prevBtn.onclick = () => { currentPage--; render(); };
+  
+        const nextBtn = document.createElement("button");
+        nextBtn.textContent = "بعدی ";
+        nextBtn.className = "px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 border border-white/30";
+        nextBtn.disabled = currentPage === totalPages;
+        nextBtn.onclick = () => { currentPage++; render(); };
+  
+        $pagination.appendChild(prevBtn);
+        $pagination.appendChild(nextBtn);
+      }
     }
-
-
+  
     function handleSearch() {
       const qRaw = document.getElementById("searchInput").value || "";
       const q = normalizeText(normalizeDigits(qRaw)).toLowerCase();
@@ -221,7 +268,7 @@
       );
       render(filtered);
     }
-
+  
     function openModal(title, record = null) {
       document.getElementById("modalTitle").textContent = title;
       document.getElementById("recordId").value = record?.id || "";
@@ -232,65 +279,85 @@
       document.getElementById("modal").classList.remove("hidden");
       document.getElementById("modal").classList.add("flex");
     }
-
+  
     function closeModal() {
       document.getElementById("modal").classList.add("hidden");
       document.getElementById("modal").classList.remove("flex");
     }
-
-    // رویدادها
+  
     document.getElementById("addBtn").addEventListener("click", () => openModal("افزودن مخاطب"));
     document.getElementById("closeModal").addEventListener("click", closeModal);
     document.getElementById("cancelBtn").addEventListener("click", closeModal);
     document.getElementById("clearBtn").addEventListener("click", () => {
-      document.getElementById("searchInput").value = "";
+    document.getElementById("searchInput").value = "";
+      currentPage = 1;
       render(contacts);
     });
+
     document.getElementById("searchInput").addEventListener("input", handleSearch);
-
+    // document.getElementById("deptFilter").addEventListener("change", () => {
+    //   currentPage = 1;
+    //   render();
+    // });
+  
     document.getElementById("list").addEventListener("click", (e) => {
-      const btn = e.target.closest("[data-action='edit']");
-      if (!btn) return;
-      const rec = contacts.find(x => x.id === btn.dataset.id);
-      if (rec) openModal("ویرایش مخاطب", rec);
-    });
+    const btn = e.target.closest("[data-action='edit']");
+    if (!btn) return;
+    const rec = contacts.find(x => x.id === btn.dataset.id);
+    if (rec) openModal("ویرایش مخاطب", rec);
+  });
 
-    document.getElementById("form").addEventListener("submit", (e) => {
-      e.preventDefault();
-      const id = document.getElementById("recordId").value;
-      const name = normalizeText(document.getElementById("nameInput").value);
-      const department = normalizeText(document.getElementById("deptInput").value);
-      const extension = normalizeDigits(document.getElementById("extInput").value);
+  document.getElementById("form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const id = document.getElementById("recordId").value;
+    const name = normalizeText(document.getElementById("nameInput").value);
+    const department = normalizeText(document.getElementById("deptInput").value);
+    const extension = normalizeDigits(document.getElementById("extInput").value);
 
-      if (!name || !extension) return;
-      if (id) {
-        const idx = contacts.findIndex(c => c.id === id);
-        if (idx > -1) {
-          const updated = { ...contacts[idx], name, department, extension };
-          updated.id = makeId(updated.name, updated.extension, updated.department);
-          contacts[idx] = updated;
-        }
-      } else {
-        const newRec = { name, department, extension };
-        newRec.id = makeId(name, extension, department);
-        contacts.unshift(newRec);
+    if (!name || !extension) return;
+
+    if (id) {
+      const idx = contacts.findIndex(c => c.id === id);
+      if (idx > -1) {
+        const updated = { ...contacts[idx], name, department, extension };
+        updated.id = makeId(updated.name, updated.extension, updated.department);
+        contacts[idx] = updated;
       }
-      localStorage.setItem(LS_KEY, JSON.stringify(contacts));
-      closeModal();
-      render(contacts);
-    });
+    } else {
+      const newRec = { name, department, extension };
+      newRec.id = makeId(name, extension, department);
+      contacts.unshift(newRec);
+    }
 
-    document.getElementById("deleteBtn").addEventListener("click", () => {
-      const id = document.getElementById("recordId").value;
-      if (!id) return;
-      contacts = contacts.filter(c => c.id !== id);
-      localStorage.setItem(LS_KEY, JSON.stringify(contacts));
-      closeModal();
-      render(contacts);
-    });
+    localStorage.setItem(LS_KEY, JSON.stringify(contacts));
+    updateDeptFilterOptions();
+    closeModal();
+    render(contacts);
+  });
 
-    init();
-  </script>
+  document.getElementById("deleteBtn").addEventListener("click", () => {
+    const id = document.getElementById("recordId").value;
+    if (!id) return;
+    contacts = contacts.filter(c => c.id !== id);
+    localStorage.setItem(LS_KEY, JSON.stringify(contacts));
+    updateDeptFilterOptions();
+    closeModal();
+    render(contacts);
+  });
+
+  document.getElementById("deptToggle").addEventListener("click", () => {
+  document.getElementById("deptList").classList.toggle("hidden");
+});
+
+  init();
+</script>
+
+<script>
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("sw.js");
+  }
+</script>
+
   <script>
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.register("sw.js");
