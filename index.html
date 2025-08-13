@@ -8,16 +8,27 @@
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
 
+  <link rel="manifest" href="manifest.json">
+
   <!-- Font -->
   <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;600&display=swap" rel="stylesheet">
 
   <style>
-    html, body { height: 100%; font-family: 'Vazirmatn', sans-serif; }
+    html, body { font-family: 'Vazirmatn', sans-serif; }
     .frosty-bg {
       background: radial-gradient(1200px 600px at 10% -10%, #c7f2ff66, transparent 60%),
                   radial-gradient(900px 500px at 110% 20%, #e3d5ff66, transparent 60%),
                   linear-gradient(135deg, #0ea5e9 0%, #7c3aed 100%);
+
+                 
+
     }
+    body {
+              min-height: 100vh;
+              background-attachment: fixed;
+              background-repeat: repeat;
+              background-size: cover;
+            }
   </style>
 </head>
 <body class="min-h-screen frosty-bg text-white/90 antialiased">
@@ -232,5 +243,11 @@
 
     init();
   </script>
+  <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("sw.js");
+    }
+  </script>
+  
 </body>
 </html>
