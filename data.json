@@ -1,0 +1,125 @@
+[
+    { "name": "مهدی علیار", "department": "مدیریت", "extension": "106" },
+    { "name": "مهدی علیار", "department": "مدیریت", "extension": "107" },
+    { "name": "مستوره رحیمی‌منش", "department": "مدیریت", "extension": "105" },
+
+    { "name": "مریم باریکانی", "department": "منابع انسانی", "extension": "502" },
+
+    { "name": "فرحناز صفوی‌زاده", "department": "بازرگانی خارجی", "extension": "505" },
+    
+    { "name": "حامد رفعتی", "department": "بازاریابی و فروش", "extension": "540" },
+    { "name": "امید آروند", "department": "بازاریابی و فروش", "extension": "116" },
+    { "name": "سهیل رحیمی", "department": "بازاریابی و فروش", "extension": "182" },
+    { "name": "شهاب شعبانی", "department": "بازاریابی و فروش", "extension": "115" },
+    { "name": "مونا عظیمی", "department": "بازاریابی و فروش", "extension": "139" },
+    { "name": "ارمغان تازنابی", "department": "بازاریابی و فروش", "extension": "114" },
+    { "name": "جمال طلوعی", "department": "بازاریابی و فروش", "extension": "110" },
+    { "name": "—", "department": "بازاریابی و فروش", "extension": "117" },
+    
+    { "name": "سحر عابدینی", "department": "قرارداد", "extension": "130" },
+    { "name": "شیدا درویش‌زاد", "department": "قرارداد", "extension": "131" },
+    { "name": "شادی قاسمی", "department": "قرارداد", "extension": "132" },
+    
+    { "name": "مجید طلایی", "department": "واحد سیپاد", "extension": "580" },
+    { "name": "حمیده گلاسی", "department": "واحد سیپاد", "extension": "801" },
+    { "name": "محبوبه رحیمی‌منش", "department": "واحد سیپاد", "extension": "802" },
+    { "name": "مریم محبی", "department": "واحد سیپاد", "extension": "804" },
+    { "name": "زهرا بابایی", "department": "واحد سیپاد", "extension": "803" },
+    
+    { "name": "پدرام یوسفی", "department": "فناوری اطلاعات (IT)", "extension": "240" },
+    { "name": "امین نقی‌پور", "department": "فناوری اطلاعات (IT)", "extension": "241" },
+    { "name": "علیرضا داورنژاد", "department": "فناوری اطلاعات (IT)", "extension": "242" },
+    
+    { "name": "محمد حکیمی", "department": "پشتیبانی", "extension": "444" },
+    { "name": "ابوالفضل اسمی", "department": "پشتیبانی", "extension": "325" },
+    { "name": "خلیل ایرانی", "department": "پشتیبانی", "extension": "311" },
+    { "name": "علی سعیدیزاده", "department": "پشتیبانی", "extension": "312" },
+    { "name": "علی آشوری", "department": "پشتیبانی", "extension": "222" },
+    { "name": "علیرضا برزگر", "department": "پشتیبانی", "extension": "204" },
+    { "name": "رضا کربلایی", "department": "پشتیبانی", "extension": "320" },
+    { "name": "علی مرآت", "department": "پشتیبانی", "extension": "318" },
+    { "name": "مهدی رحیمیمنش", "department": "پشتیبانی", "extension": "318" },
+    { "name": "بایگانی", "department": "پشتیبانی", "extension": "270" },
+    { "name": "دنیا عضایی", "department": "پشتیبانی", "extension": "213" },
+    { "name": "مریم آرمیننسب", "department": "پشتیبانی", "extension": "545" },
+    { "name": "ساره تشرعی", "department": "پشتیبانی", "extension": "150" },
+    { "name": "ستاره دولتشاه", "department": "پشتیبانی", "extension": "211" },
+    { "name": "لی رحمانی", "department": "پشتیبانی", "extension": "202" },
+    { "name": "افسانه رضایی", "department": "پشتیبانی", "extension": "223" },
+    { "name": "صاحبه سنایی", "department": "پشتیبانی", "extension": "201" },
+    { "name": "الناز علیپور", "department": "پشتیبانی", "extension": "203" },
+    { "name": "انسیه معصومی", "department": "پشتیبانی", "extension": "323" },
+    { "name": "شیرین میرشکاری", "department": "پشتیبانی", "extension": "200" },
+    { "name": "مینا عضایی", "department": "پشتیبانی", "extension": "210" },
+    { "name": "ناهید اکبری", "department": "پشتیبانی", "extension": "151" },
+    { "name": "فاطمه نجفی", "department": "پشتیبانی", "extension": "205" },
+    { "name": "محمد جعفری", "department": "پشتیبانی", "extension": "317" },
+    { "name": "زهره عرب", "department": "پشتیبانی", "extension": "214" },
+    { "name": "داوود پریزن", "department": "پشتیبانی", "extension": "224" },
+    { "name": "محمد حکیمی", "department": "پشتیبانی", "extension": "550" },
+    
+    { "name": "پارسیا رسائی", "department": "تعمیرگاه", "extension": "163" },
+    { "name": "-", "department": "تعمیرگاه", "extension": "162" },
+    { "name": "عرفان یوسفلی", "department": "تعمیرگاه", "extension": "165" },
+    
+    { "name": "عسگر علیار", "department": "تحقیق و توسعه (سخت افزار)", "extension": "535" },
+    { "name": "حسن علیار", "department": "تحقیق و توسعه (سخت افزار)", "extension": "585" },
+    { "name": "امیر یگانه", "department": "تحقیق و توسعه (سخت افزار)", "extension": "620" },
+    { "name": "محمدحسین کاشانی‌نیا", "department": "تحقیق و توسعه (سخت افزار)", "extension": "621" },
+    { "name": "امین جهانتاب", "department": "تحقیق و توسعه (سخت افزار)", "extension": "622" },
+    { "name": "محمد علی پاژوار", "department": "تحقیق و توسعه (سخت افزار)", "extension": "623" },
+    { "name": "ادیب جهان‌تاب", "department": "تحقیق و توسعه (سخت افزار)", "extension": "625" },
+    
+    { "name": "حسن ابوالحسنی", "department": "تحقیق و توسعه (نرم افزار)", "extension": "600" },
+    { "name": "حسین ایازی", "department": "تحقیق و توسعه (نرم افزار)", "extension": "601" },
+    { "name": "مانا علیار", "department": "تحقیق و توسعه (نرم افزار)", "extension": "602" },
+    { "name": "کامران کازرونیان", "department": "تحقیق و توسعه (نرم افزار)", "extension": "603" },
+    { "name": "مریم غنچه‌علی", "department": "تحقیق و توسعه (نرم افزار)", "extension": "605" },
+    { "name": "عماد قوسی", "department": "تحقیق و توسعه (نرم افزار)", "extension": "604" },
+    { "name": "محسن سروری", "department": "تحقیق و توسعه (نرم افزار)", "extension": "604" },
+    
+    { "name": "ناصر داورنژاد", "department": "تولید", "extension": "565" },
+    { "name": "مریم آزاد", "department": "تولید", "extension": "524" },
+    { "name": "محمدرضا شیرزاد", "department": "تولید", "extension": "521" },
+    { "name": "اسماعیل افشاری", "department": "تولید", "extension": "521" },
+    { "name": "علی منوچهر", "department": "تولید", "extension": "521" },
+    { "name": "ناصر ابراهیمی", "department": "تولید", "extension": "523" },
+    { "name": "مهدی پارسا", "department": "تولید", "extension": "522" },
+    { "name": "مجید علیزاده", "department": "تولید", "extension": "525" },
+    { "name": "حوریه رحیمی‌منش", "department": "تولید", "extension": "161" },
+    { "name": "دامون منوچهری", "department": "تولید", "extension": "125" },
+    
+    { "name": "علی خجسته", "department": "تیم مهندس خجسته", "extension": "400" },
+    { "name": "همکاران علی خجسته", "department": "تیم مهندس خجسته", "extension": "499" },
+
+    { "name": "علی اسفندیاری", "department": "امور مالی", "extension": "190" },
+    { "name": "پریسا کاظمی", "department": "امور مالی", "extension": "191" },
+    { "name": "مریم کیفچی", "department": "امور مالی", "extension": "192" },
+    { "name": "سمیه تیمساری", "department": "امور مالی", "extension": "193" },
+    
+    { "name": "زهرا بابایی", "department": "طراحی و صدور کارت", "extension": "181" },
+    { "name": "رضا اکبری", "department": "طراحی و صدور کارت", "extension": "181" },
+    
+    { "name": "مسعود قضائی", "department": "تدارکات", "extension": "511" },
+    { "name": "سعید آریان‌مهر", "department": "تدارکات", "extension": "512" },
+    
+    { "name": "محمد قضائی", "department": "تأسیسات", "extension": "510" },
+    
+    { "name": "محمد مرادی", "department": "لابی من", "extension": "508" },
+    
+    { "name": "-", "department": "اتاق کنفرانس", "extension": "530" },
+    
+    { "name": "بیتا رحیمی‌منش", "department": "مرکز تلفن", "extension": "101" },
+    { "name": "بهناز میرزایی", "department": "مرکز تلفن", "extension": "102" },
+    
+    { "name": "محمد رحیمی‌منش", "department": "بسته بندی", "extension": "120" },
+    { "name": "نوید اکبری", "department": "بسته بندی", "extension": "121" },
+    
+    { "name": "علی حبیبی", "department": "انبار", "extension": "506" },
+    { "name": "ابراهیم آزاد", "department": "انبار", "extension": "506" }
+
+      
+          
+
+  ]
+  
